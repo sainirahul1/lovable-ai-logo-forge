@@ -1,9 +1,8 @@
-
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Key, ExternalLink, Shield, Zap } from "lucide-react";
+import { Key, ExternalLink, Shield, Zap, CheckCircle } from "lucide-react";
 
 interface ApiPageProps {
   apiKey: string;
@@ -12,6 +11,8 @@ interface ApiPageProps {
 }
 
 const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
+  const hasApiKey = apiKey.trim().length > 0;
+
   return (
     <div className="space-y-8">
       <div className="text-center">
@@ -50,6 +51,16 @@ const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
                 Your API key is stored securely and only used for logo generation
               </p>
             </div>
+
+            {hasApiKey && (
+              <div className="flex items-center gap-3 p-4 bg-green-100 rounded-lg border border-green-200 animate-in slide-in-from-top-2 duration-300">
+                <CheckCircle className="h-5 w-5 text-green-600" />
+                <div>
+                  <p className="font-medium text-green-800">API Added</p>
+                  <p className="text-sm text-green-600">Your API key has been successfully configured</p>
+                </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-4 p-4 bg-blue-100 rounded-lg border border-blue-200">
               <ExternalLink className="h-5 w-5 text-blue-600" />
