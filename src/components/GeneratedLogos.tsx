@@ -12,8 +12,13 @@ interface GeneratedLogosProps {
 
 const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps) => {
   const downloadLogo = (logoUrl: string, index: number) => {
-    // In a real app, this would download the actual image
-    console.log(`Downloading logo ${index + 1}:`, logoUrl);
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = logoUrl;
+    link.download = `${brandName.replace(/\s+/g, '_')}_logo_${index + 1}.webp`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   if (isGenerating) {
@@ -54,7 +59,7 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
           </div>
           <h3 className="text-xl font-semibold mb-2">Ready to Generate</h3>
           <p className="text-muted-foreground">
-            Configure your brand settings and click "Generate 3 Logos" to create unique designs.
+            Configure your brand settings and API key, then click "Generate 3 Logos" to create unique designs.
           </p>
         </div>
       </Card>
@@ -72,7 +77,7 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
       </div>
 
       <div className="space-y-4">
-        {logos.map((logo, index) => (
+        {logos.map((logoUrl, index) => (
           <div key={index} className="group">
             <Card className="p-4 hover:shadow-lg transition-all border-2 hover:border-primary/30">
               <div className="flex items-center justify-between mb-3">
@@ -80,7 +85,7 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => downloadLogo(logo, index)}
+                  onClick={() => downloadLogo(logoUrl, index)}
                   className="opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <Download className="h-4 w-4 mr-2" />
@@ -88,8 +93,20 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
                 </Button>
               </div>
               
-              <div className="aspect-square bg-gradient-to-br from-accent/20 to-accent/40 rounded-lg flex items-center justify-center border-2 border-dashed border-muted-foreground/30">
-                <div className="text-center">
+              <div className="aspect-square bg-gradient-to-br from-accent/20 to-accent/40 rounded-lg flex items-center justify-center border-2 border-dashed border-muted-foreground/30 overflow-hidden">
+                <img 
+                  src={logoUrl} 
+                  alt={`${brandName} Logo ${index + 1}`}
+                  className="w-full h-full object-contain"
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'block';
+                  }}
+                />
+                <div className="text-center hidden">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-2">
                     <Sparkles className="h-6 w-6 text-primary" />
                   </div>
@@ -97,7 +114,7 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
                     {brandName} Logo {index + 1}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    High-resolution PNG
+                    High-resolution WEBP
                   </p>
                 </div>
               </div>
@@ -109,7 +126,7 @@ const GeneratedLogos = ({ logos, isGenerating, brandName }: GeneratedLogosProps)
       <div className="mt-6 p-4 bg-accent/20 rounded-lg border border-accent/30">
         <h4 className="font-semibold mb-2 text-sm">💡 Pro Tip</h4>
         <p className="text-sm text-muted-foreground">
-          Each logo is generated as a high-resolution PNG with transparent background, 
+          Each logo is generated as a high-resolution WEBP with transparent background, 
           perfect for use across all your branding materials.
         </p>
       </div>

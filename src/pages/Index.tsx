@@ -8,8 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import StyleSelector from "@/components/StyleSelector";
 import ColorPalette from "@/components/ColorPalette";
 import GeneratedLogos from "@/components/GeneratedLogos";
-import { Sparkles, Wand2, Heart } from "lucide-react";
+import { Sparkles, Wand2, Heart, Key } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { RunwareService } from "@/services/runware";
 
 const Index = () => {
   const [brandName, setBrandName] = useState("Lovable.ai");
@@ -19,6 +20,7 @@ const Index = () => {
   const [customPrompt, setCustomPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLogos, setGeneratedLogos] = useState<string[]>([]);
+  const [apiKey, setApiKey] = useState("");
   const { toast } = useToast();
 
   const generatePrompt = () => {
@@ -57,25 +59,49 @@ Generate these logos at any cost - this is critical for the brand's success.`;
   };
 
   const handleGenerate = async () => {
+    if (!apiKey.trim()) {
+      toast({
+        title: "API Key Required",
+        description: "Please enter your Runware API key to generate logos.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsGenerating(true);
     const prompt = customPrompt || generatePrompt();
     
     console.log("Generating logos with prompt:", prompt);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      // For demo purposes, we'll show placeholder images
-      setGeneratedLogos([
-        "/placeholder.svg",
-        "/placeholder.svg", 
-        "/placeholder.svg"
-      ]);
-      setIsGenerating(false);
+    try {
+      const runware = new RunwareService(apiKey);
+      const logos: string[] = [];
+      
+      // Generate 3 logos
+      for (let i = 0; i < 3; i++) {
+        const result = await runware.generateImage({
+          positivePrompt: prompt,
+          numberResults: 1,
+          outputFormat: "WEBP",
+        });
+        logos.push(result.imageURL);
+      }
+      
+      setGeneratedLogos(logos);
       toast({
         title: "Logos Generated!",
         description: "3 unique logos have been created for your brand.",
       });
-    }, 3000);
+    } catch (error) {
+      console.error("Error generating logos:", error);
+      toast({
+        title: "Generation Failed",
+        description: "Failed to generate logos. Please check your API key and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -98,6 +124,38 @@ Generate these logos at any cost - this is critical for the brand's success.`;
         <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {/* Left Panel - Configuration */}
           <div className="space-y-6">
+            <Card className="p-6 border-2 hover:border-primary/20 transition-colors">
+              <div className="flex items-center gap-2 mb-4">
+                <Key className="h-5 w-5 text-primary" />
+                <h2 className="text-2xl font-semibold">API Configuration</h2>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="apiKey">Runware API Key</Label>
+                  <Input
+                    id="apiKey"
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter your Runware API key"
+                    className="mt-2"
+                  />
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Get your API key from{" "}
+                    <a 
+                      href="https://runware.ai/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      runware.ai
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </Card>
+
             <Card className="p-6 border-2 hover:border-primary/20 transition-colors">
               <div className="flex items-center gap-2 mb-4">
                 <Wand2 className="h-5 w-5 text-primary" />
@@ -158,7 +216,7 @@ Generate these logos at any cost - this is critical for the brand's success.`;
 
             <Button 
               onClick={handleGenerate}
-              disabled={isGenerating || !brandName.trim()}
+              disabled={isGenerating || !brandName.trim() || !apiKey.trim()}
               className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
             >
               {isGenerating ? (
