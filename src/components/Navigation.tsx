@@ -19,9 +19,9 @@ const navigationItems = [
 
 const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
   return (
-    <Card className="p-6 border-2 border-primary/20 bg-gradient-to-br from-background to-accent/5">
-      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-        Logo Creator Steps
+    <Card className="p-6 border-2 border-blue-200 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        AI Logo Generator
       </h2>
       
       <div className="space-y-3">
@@ -36,15 +36,15 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
               variant={isActive ? "default" : "ghost"}
               className={cn(
                 "w-full justify-start h-auto p-4 transition-all duration-300",
-                isActive && "bg-gradient-to-r from-primary to-purple-600 text-white shadow-lg",
-                !isActive && isCompleted && "bg-accent/50 text-accent-foreground",
-                !isActive && !isCompleted && "hover:bg-accent/30"
+                isActive && "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg",
+                !isActive && isCompleted && "bg-green-100 text-green-700 border border-green-200",
+                !isActive && !isCompleted && "hover:bg-blue-100 hover:border-blue-200"
               )}
             >
               <div className="flex items-center gap-3 w-full">
                 <div className={cn(
                   "p-2 rounded-lg transition-colors",
-                  isActive ? "bg-white/20" : "bg-accent/20"
+                  isActive ? "bg-white/20" : isCompleted ? "bg-green-200" : "bg-blue-200"
                 )}>
                   <item.icon className="h-5 w-5" />
                 </div>

@@ -24,7 +24,7 @@ const Index = () => {
   const generatePrompt = () => {
     const colorsText = selectedColors.join(", ");
     const prompt = `🎨 Logo Generation Prompt for ${brandName}
-Generate 3 unique, high-quality logos for a brand named "${brandName}" using the following details:
+Generate 2 unique, high-quality logos for a brand named "${brandName}" using the following details:
 
 🧠 Brand Vision:
 ${brandVision}
@@ -45,7 +45,7 @@ ${selectedStyle}
 • Keep the layout centered and visually balanced
 
 ✅ Output Requirements:
-• Return exactly 3 logos
+• Return exactly 2 logos
 • Each as a high-resolution PNG with transparent background
 • Logos should look visually distinct from each other
 • No watermark or overlays
@@ -60,7 +60,7 @@ Generate these logos at any cost - this is critical for the brand's success.`;
     if (!apiKey.trim()) {
       toast({
         title: "API Key Required",
-        description: "Please enter your Runware API key to generate logos.",
+        description: "Please enter your Hugging Face API key to generate logos.",
         variant: "destructive",
       });
       return;
@@ -75,8 +75,8 @@ Generate these logos at any cost - this is critical for the brand's success.`;
       const runware = new RunwareService(apiKey);
       const logos: string[] = [];
       
-      // Generate 3 logos
-      for (let i = 0; i < 3; i++) {
+      // Generate 2 logos
+      for (let i = 0; i < 2; i++) {
         const result = await runware.generateImage({
           positivePrompt: prompt,
           numberResults: 1,
@@ -88,7 +88,7 @@ Generate these logos at any cost - this is critical for the brand's success.`;
       setGeneratedLogos(logos);
       toast({
         title: "Logos Generated!",
-        description: "3 unique logos have been created for your brand.",
+        description: "2 unique logos have been created for your brand.",
       });
     } catch (error) {
       console.error("Error generating logos:", error);

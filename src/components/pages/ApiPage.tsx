@@ -16,20 +16,20 @@ const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
     <div className="space-y-8">
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="p-3 rounded-full bg-gradient-to-br from-primary/20 to-purple-600/20">
-            <Key className="h-8 w-8 text-primary" />
+          <div className="p-3 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-600/20">
+            <Key className="h-8 w-8 text-blue-600" />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             API Configuration
           </h1>
         </div>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Connect to Runware AI to generate stunning, professional logos for your brand
+          Connect to Hugging Face to generate stunning, professional logos for your brand
         </p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
-        <Card className="p-8 border-2 hover:border-primary/30 transition-colors">
+        <Card className="p-8 border-2 hover:border-blue-500/30 transition-colors bg-gradient-to-br from-blue-50 to-purple-50">
           <div className="space-y-6">
             <div className="flex items-center gap-3 mb-6">
               <Shield className="h-6 w-6 text-green-500" />
@@ -37,31 +37,31 @@ const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
             </div>
             
             <div>
-              <Label htmlFor="apiKey" className="text-lg font-medium">Runware API Key</Label>
+              <Label htmlFor="apiKey" className="text-lg font-medium">Hugging Face API Key</Label>
               <Input
                 id="apiKey"
                 type="password"
                 value={apiKey}
                 onChange={(e) => onApiKeyChange(e.target.value)}
-                placeholder="Enter your Runware API key"
-                className="mt-3 h-12 text-lg"
+                placeholder="Enter your Hugging Face API key"
+                className="mt-3 h-12 text-lg border-2 focus:border-blue-500"
               />
               <p className="text-sm text-muted-foreground mt-2">
                 Your API key is stored securely and only used for logo generation
               </p>
             </div>
 
-            <div className="flex items-center gap-4 p-4 bg-accent/20 rounded-lg">
-              <ExternalLink className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-4 p-4 bg-blue-100 rounded-lg border border-blue-200">
+              <ExternalLink className="h-5 w-5 text-blue-600" />
               <div>
                 <p className="font-medium">Need an API key?</p>
                 <a 
-                  href="https://runware.ai/" 
+                  href="https://huggingface.co/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline text-sm"
+                  className="text-blue-600 hover:underline text-sm"
                 >
-                  Get your free API key from runware.ai →
+                  Get your free API key from huggingface.co →
                 </a>
               </div>
             </div>
@@ -69,22 +69,22 @@ const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
             <Button 
               onClick={onNext}
               disabled={!apiKey.trim()}
-              className="w-full h-12 text-lg bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+              className="w-full h-12 text-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
             >
               Continue to Brand Setup
             </Button>
           </div>
         </Card>
 
-        <Card className="p-8 border-2 border-accent/30">
+        <Card className="p-8 border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-pink-50">
           <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
             <Zap className="h-5 w-5 text-yellow-500" />
-            Why Runware AI?
+            Why Hugging Face?
           </h3>
           
           <div className="space-y-4">
             <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-primary mt-2" />
+              <div className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
               <div>
                 <h4 className="font-medium">Lightning Fast</h4>
                 <p className="text-sm text-muted-foreground">Generate logos in seconds with advanced AI</p>
@@ -108,7 +108,7 @@ const ApiPage = ({ apiKey, onApiKeyChange, onNext }: ApiPageProps) => {
             </div>
             
             <div className="flex gap-3">
-              <div className="w-2 h-2 rounded-full bg-blue-500 mt-2" />
+              <div className="w-2 h-2 rounded-full bg-pink-500 mt-2" />
               <div>
                 <h4 className="font-medium">Commercial Ready</h4>
                 <p className="text-sm text-muted-foreground">Full rights to use generated logos commercially</p>

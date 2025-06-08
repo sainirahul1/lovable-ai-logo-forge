@@ -37,10 +37,10 @@ const GeneratePage = ({
     <div className="space-y-8">
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="p-3 rounded-full bg-gradient-to-br from-primary/20 to-purple-600/20">
-            <Eye className="h-8 w-8 text-primary" />
+          <div className="p-3 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-600/20">
+            <Eye className="h-8 w-8 text-blue-600" />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
             Generate Logos
           </h1>
         </div>
@@ -52,33 +52,33 @@ const GeneratePage = ({
       <div className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-6">
           {/* Configuration Summary */}
-          <Card className="p-6 border-2 border-accent/30">
+          <Card className="p-6 border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-purple-50">
             <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-              <Wand2 className="h-5 w-5 text-primary" />
+              <Wand2 className="h-5 w-5 text-blue-600" />
               Configuration Summary
             </h3>
             
             <div className="space-y-4">
               <div>
-                <Label className="font-medium text-primary">Brand Name</Label>
+                <Label className="font-medium text-blue-600">Brand Name</Label>
                 <p className="text-lg">{brandName}</p>
               </div>
               
               <div>
-                <Label className="font-medium text-primary">Brand Vision</Label>
+                <Label className="font-medium text-blue-600">Brand Vision</Label>
                 <p className="text-sm text-muted-foreground line-clamp-3">{brandVision}</p>
               </div>
               
               <div>
-                <Label className="font-medium text-primary">Style</Label>
+                <Label className="font-medium text-blue-600">Style</Label>
                 <p>{selectedStyle}</p>
               </div>
               
               <div>
-                <Label className="font-medium text-primary">Colors</Label>
+                <Label className="font-medium text-blue-600">Colors</Label>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {selectedColors.map((color) => (
-                    <span key={color} className="px-3 py-1 bg-accent/50 rounded-full text-sm">
+                    <span key={color} className="px-3 py-1 bg-purple-100 rounded-full text-sm border border-purple-200">
                       {color}
                     </span>
                   ))}
@@ -88,10 +88,10 @@ const GeneratePage = ({
           </Card>
 
           {/* Custom Prompt */}
-          <Card className="p-6 border-2 hover:border-primary/30 transition-colors">
+          <Card className="p-6 border-2 hover:border-purple-300 transition-colors bg-gradient-to-br from-purple-50 to-pink-50">
             <div className="space-y-4">
               <h3 className="text-xl font-semibold flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
+                <Sparkles className="h-5 w-5 text-purple-600" />
                 Custom Prompt (Optional)
               </h3>
               
@@ -99,13 +99,13 @@ const GeneratePage = ({
                 value={customPrompt}
                 onChange={(e) => onCustomPromptChange(e.target.value)}
                 placeholder="Write your own custom prompt or use our generated one..."
-                className="min-h-[150px] text-sm resize-none"
+                className="min-h-[150px] text-sm resize-none border-2 focus:border-purple-400"
               />
               
               <Button 
                 variant="outline" 
                 onClick={onGeneratePrompt}
-                className="w-full"
+                className="w-full border-2 border-purple-200 hover:bg-purple-100"
               >
                 Generate Default Prompt
               </Button>
@@ -114,14 +114,14 @@ const GeneratePage = ({
                 <Button 
                   onClick={onBack}
                   variant="outline"
-                  className="flex-1 h-12"
+                  className="flex-1 h-12 border-2 border-gray-200"
                 >
                   Back
                 </Button>
                 <Button 
                   onClick={onGenerate}
                   disabled={isGenerating || !brandName.trim()}
-                  className="flex-1 h-12 text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+                  className="flex-1 h-12 text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
                 >
                   {isGenerating ? (
                     <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ const GeneratePage = ({
                   ) : (
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5" />
-                      Generate 3 Logos
+                      Generate 2 Logos
                     </div>
                   )}
                 </Button>
