@@ -1,18 +1,16 @@
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import StyleSelector from "@/components/StyleSelector";
-import ColorPalette from "@/components/ColorPalette";
-import GeneratedLogos from "@/components/GeneratedLogos";
-import { Sparkles, Wand2, Heart, Key } from "lucide-react";
+import Navigation from "@/components/Navigation";
+import ApiPage from "@/components/pages/ApiPage";
+import BrandPage from "@/components/pages/BrandPage";
+import StylePage from "@/components/pages/StylePage";
+import ColorsPage from "@/components/pages/ColorsPage";
+import GeneratePage from "@/components/pages/GeneratePage";
 import { useToast } from "@/hooks/use-toast";
 import { RunwareService } from "@/services/runware";
 
 const Index = () => {
+  const [currentPage, setCurrentPage] = useState("api");
   const [brandName, setBrandName] = useState("Lovable.ai");
   const [brandVision, setBrandVision] = useState("Humanizing design through AI-powered creativity");
   const [selectedStyle, setSelectedStyle] = useState("Minimalist");
@@ -104,142 +102,83 @@ Generate these logos at any cost - this is critical for the brand's success.`;
     }
   };
 
+  const renderCurrentPage = () => {
+    switch (currentPage) {
+      case "api":
+        return (
+          <ApiPage
+            apiKey={apiKey}
+            onApiKeyChange={setApiKey}
+            onNext={() => setCurrentPage("brand")}
+          />
+        );
+      case "brand":
+        return (
+          <BrandPage
+            brandName={brandName}
+            brandVision={brandVision}
+            onBrandNameChange={setBrandName}
+            onBrandVisionChange={setBrandVision}
+            onNext={() => setCurrentPage("style")}
+            onBack={() => setCurrentPage("api")}
+          />
+        );
+      case "style":
+        return (
+          <StylePage
+            selectedStyle={selectedStyle}
+            onStyleSelect={setSelectedStyle}
+            onNext={() => setCurrentPage("colors")}
+            onBack={() => setCurrentPage("brand")}
+          />
+        );
+      case "colors":
+        return (
+          <ColorsPage
+            selectedColors={selectedColors}
+            onColorsChange={setSelectedColors}
+            onNext={() => setCurrentPage("generate")}
+            onBack={() => setCurrentPage("style")}
+          />
+        );
+      case "generate":
+        return (
+          <GeneratePage
+            brandName={brandName}
+            brandVision={brandVision}
+            selectedStyle={selectedStyle}
+            selectedColors={selectedColors}
+            customPrompt={customPrompt}
+            onCustomPromptChange={setCustomPrompt}
+            onGeneratePrompt={generatePrompt}
+            onGenerate={handleGenerate}
+            isGenerating={isGenerating}
+            generatedLogos={generatedLogos}
+            onBack={() => setCurrentPage("colors")}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/20">
-      {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10">
       <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="h-8 w-8 text-primary" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              AI Logo Generator
-            </h1>
-            <Heart className="h-8 w-8 text-purple-500" />
-          </div>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Create stunning, professional logos powered by AI. Customize your brand vision and watch as unique designs come to life.
-          </p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Left Panel - Configuration */}
-          <div className="space-y-6">
-            <Card className="p-6 border-2 hover:border-primary/20 transition-colors">
-              <div className="flex items-center gap-2 mb-4">
-                <Key className="h-5 w-5 text-primary" />
-                <h2 className="text-2xl font-semibold">API Configuration</h2>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="apiKey">Runware API Key</Label>
-                  <Input
-                    id="apiKey"
-                    type="password"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    placeholder="Enter your Runware API key"
-                    className="mt-2"
-                  />
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Get your API key from{" "}
-                    <a 
-                      href="https://runware.ai/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline"
-                    >
-                      runware.ai
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 border-2 hover:border-primary/20 transition-colors">
-              <div className="flex items-center gap-2 mb-4">
-                <Wand2 className="h-5 w-5 text-primary" />
-                <h2 className="text-2xl font-semibold">Brand Configuration</h2>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="brandName">Brand Name</Label>
-                  <Input
-                    id="brandName"
-                    value={brandName}
-                    onChange={(e) => setBrandName(e.target.value)}
-                    placeholder="Enter your brand name"
-                    className="mt-2"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="brandVision">Brand Vision</Label>
-                  <Textarea
-                    id="brandVision"
-                    value={brandVision}
-                    onChange={(e) => setBrandVision(e.target.value)}
-                    placeholder="Describe your brand's mission and values"
-                    className="mt-2 min-h-[100px]"
-                  />
-                </div>
-              </div>
-            </Card>
-
-            <StyleSelector 
-              selectedStyle={selectedStyle}
-              onStyleSelect={setSelectedStyle}
-            />
-
-            <ColorPalette 
-              selectedColors={selectedColors}
-              onColorsChange={setSelectedColors}
-            />
-
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold mb-4">Custom Prompt (Optional)</h3>
-              <Textarea
-                value={customPrompt}
-                onChange={(e) => setCustomPrompt(e.target.value)}
-                placeholder="Or write your own custom prompt..."
-                className="min-h-[150px] text-sm"
+        <div className="grid lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+          {/* Left Panel - Navigation */}
+          <div className="lg:col-span-1">
+            <div className="lg:sticky lg:top-8">
+              <Navigation 
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
               />
-              <Button 
-                variant="outline" 
-                onClick={generatePrompt}
-                className="mt-3 w-full"
-              >
-                Generate Default Prompt
-              </Button>
-            </Card>
-
-            <Button 
-              onClick={handleGenerate}
-              disabled={isGenerating || !brandName.trim() || !apiKey.trim()}
-              className="w-full h-12 text-lg font-semibold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
-            >
-              {isGenerating ? (
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Generating Logos...
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5" />
-                  Generate 3 Logos
-                </div>
-              )}
-            </Button>
+            </div>
           </div>
 
-          {/* Right Panel - Results */}
-          <div>
-            <GeneratedLogos 
-              logos={generatedLogos}
-              isGenerating={isGenerating}
-              brandName={brandName}
-            />
+          {/* Right Panel - Content */}
+          <div className="lg:col-span-3">
+            {renderCurrentPage()}
           </div>
         </div>
       </div>
