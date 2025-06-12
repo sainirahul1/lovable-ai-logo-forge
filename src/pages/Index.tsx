@@ -73,6 +73,7 @@ Generate these logos at any cost - this is critical for the brand's success.`;
     
     try {     
       const runware = new RunwareService(apiKey);
+      const logos: string[] = [];
       
       // Generate 2 logos
       for (let i = 0; i < 2; i++) {
