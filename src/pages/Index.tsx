@@ -11,8 +11,8 @@ import { RunwareService } from "@/services/runware";
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState("api");
-  const [brandName, setBrandName] = useState("Lovable.ai");
-  const [brandVision, setBrandVision] = useState("Humanizing design through AI-powered creativity");
+  const [brandName, setBrandName] = useState("enter brand name");
+  const [brandVision, setBrandVision] = useState("Enter your Brand vision");
   const [selectedStyle, setSelectedStyle] = useState("Minimalist");
   const [selectedColors, setSelectedColors] = useState(["Blue", "Lilac", "White"]);
   const [customPrompt, setCustomPrompt] = useState("");
@@ -71,15 +71,14 @@ Generate these logos at any cost - this is critical for the brand's success.`;
     
     console.log("Generating logos with prompt:", prompt);
     
-    try {
+    try {     
       const runware = new RunwareService(apiKey);
-      const logos: string[] = [];
       
       // Generate 2 logos
       for (let i = 0; i < 2; i++) {
-        const result = await runware.generateImage({
+        const result = await runware.generateImage({      
           positivePrompt: prompt,
-          numberResults: 1,
+          numberResults: 1,   
           outputFormat: "WEBP",
         });
         logos.push(result.imageURL);
